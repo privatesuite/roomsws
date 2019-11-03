@@ -1,6 +1,15 @@
+const path = require("path");
+const https = require("https");
 const WebSocket = require("ws");
 
-const wss = new WebSocket.Server({port: 8080});
+const server = https.createServer({
+
+	ca: fs.readFileSync(path.join(__dirname, "privatesuitemag_com.ca-bundle")),
+	cert: fs.readFileSync(path.join(__dirname, "privatesuitemag_com.crt")),
+	key: fs.readFileSync(path.join(__dirname, "privatesuitemag_com.key"))
+
+});
+const wss = new WebSocket.Server({ server });
 
 const rooms = new Map();
 
@@ -29,3 +38,5 @@ wss.on("connection", conn => {
 	});
 
 });
+
+server.listen(8080);
